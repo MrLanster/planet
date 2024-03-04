@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=0.98, user-scalable=no">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="/static/login_style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+	
+    <div class="container">
+        <div class="top_bar">
+            <button class="back_button" onclick="window.location.href='/'"><i class="fa fa-angle-left"></i></button>
+            <img src="../static/images/Logo.png" class="logo"/>
+        </div>
+        <h2>Sign Up</h2>
+        <p>connect with your world in a single click</p>
+        <p id="err" style="display: none;"></p>
+        <form id="signin-form" class="signin-form" method="post" novalidate>
+            {% csrf_token %}
+            <span>
+                Name
+                <input type="text" placeholder="Your Name" id="name" name="name" required>
+            </span>
+            <span>
+                Email
+                <input type="email" placeholder="email@yourdomain.com" id="email" name="email" required>
+            </span>
+            <span>
+                Password
+                <input type="password" placeholder="Enter your password" id="pass" name="password" required>
+                <button type="button" id="see" onclick="togglePasswordVisibility('pass',0)">
+                    <img class="eye" src="/static/images/eye normal.png"/></button>
+            </span>
+            <span>
+                Confirm Password
+                <input type="password" placeholder="Confirm your password" id="confirm" name="confirm-password" required>
+                <button type="button" id="see" onclick="togglePasswordVisibility('confirm',1)">
+                    <img class="eye" src="/static/images/eye normal.png"/></button>
+            </span>
+            <button type="submit" id="myButton" class="signin-button">Sign Up</button>
+            <p>Already have an account? <a href="/login/">Login</a></p>
+        </form>
+    
+    </div>
+
+        <!-- <form class="signup-form" method="post">
+            	{% csrf_token %}
+                    <p id="err"></p>
+
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" placeholder="Your Name" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" placeholder="email@yourdomain.com" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" placeholder="Enter your password" id="pass" name="password" required>
+                <img class="password-toggle" onclick="togglePasswordVisibility('password')" src="/static/images/eye.png" alt="Eye Icon">
+            </div>
+            <div class="form-group">
+                <label for="confirm-password" id="co">Confirm Password:</label>
+                <input type="password" placeholder="Confirm your password" id="confirm" name="confirm-password" required>
+                <img class="password-toggle" onclick="togglePasswordVisibility1('confirm-password')" src="/static/images/eye.png" alt="Eye Icon">
+            </div>
+            <button id="myButton" class="signup-button">Sign Up</button>
+            <br>
+            <label>Already have an account? <a href="/login"><b>Login</b></a></label>
+              <div class="icon-container">
+        
+    </div>
+        </form> -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        
+            function togglePasswordVisibility(fieldId,imgno) {
+            var passwordField = document.getElementById(fieldId);
+            var passwordToggle = document.getElementsByClassName('eye')[imgno];
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                passwordToggle.src = "/static/images/eye X.png";
+            } else {
+                passwordField.type = "password";
+                passwordToggle.src = "/static/images/eye normal.png";
+            }
+        }
+
+	$(document).ready(function() {
+    $('#myButton').click(function(event) {
+        event.preventDefault();
+        var name = $('#name').val();
+        var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+        var email = $("#email").val();  
+        var pass = $("#pass").val();    
+        var confirm = $("#confirm").val();  
+
+        $.ajax({
+            type: 'POST',
+            url: '/signup/',
+            data: {
+                'csrfmiddlewaretoken': csrfToken,
+                'name': name,
+                'email': email,
+                'password': pass,        
+                'confirm': confirm,  
+            },
+            success: function(response) {
+		  if (response.message === "success") {
+		    window.location.href = '/login/';  
+		}
+            },
+            error: function(xhr, status, error) {
+            	var responseObj = JSON.parse(xhr.responseText);
+            	errorMessage = responseObj.message;
+                document.getElementById('err').style.display="block"
+                $("#err").text(errorMessage);
+                
+            }
+        });
+    });
+});
+
+
+    </script>
+
+</body>
+</html>

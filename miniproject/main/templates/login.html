@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=0.98, user-scalable=no">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="/static/login_style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+</head>
+<body>
+<div class="container">
+    <div class="top_bar">
+        <button class="back_button" onclick="window.location='/'"><i class="fa fa-angle-left"></i></button>
+        <img src="/static/images/Logo.png" class="logo"/>
+    </div>
+    <h2>Sign In</h2>
+    <p>connect with your world in a single click</p>
+    <p id="err" style="display: none;"></p>
+    <form id="signin-form" class="signin-form" method="post" novalidate>
+        {% csrf_token %}
+        <span>
+            Email
+            <input type="email" placeholder="email@yourdomain.com" id="email" name="email" required>
+        </span>
+        <span>
+            Password
+            <input type="password" placeholder="Enter your password" id="password" name="password" required>
+            <button type="button" id="see" onclick="togglePasswordVisibility()">
+                <img id="eye" src="/static/images/eye normal.png"/></button>
+            <a href="#">Forgot Password?</a>
+        </span>
+        <button type="submit" class="signin-button">Sign In</button>
+        <p>Don't have an account? <a href="/signup/">Sign Up</a></p>
+    </form>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    function togglePasswordVisibility() {
+        var passwordField = document.getElementById("password");
+        var passwordToggle = document.querySelector("#eye");
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            passwordToggle.src = "/static/images/eye X.png";
+        } else {
+            passwordField.type = "password";
+            passwordToggle.src = "/static/images/eye normal.png";
+        }
+    }
+
+    $(document).ready(function() {
+    $('.signin-form').submit(function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        var email = $('#email').val();
+        var password = $('#password').val();
+        var csrfToken = $('[name=csrfmiddlewaretoken]').val();
+
+        $.ajax({
+            type: 'POST',
+            url: '/login/',
+            data: {
+                'csrfmiddlewaretoken': csrfToken,
+                'email': email,
+                'password': password
+            },
+            success: function(response) {
+                if (response.message === "success") {
+                    window.location.href = '/dash';
+                }
+                if (response.message === "verify"){
+                    window.location.href = "/unverified"
+                }
+            },
+            error: function(xhr, status, error) {
+                try {
+                    var responseObj = JSON.parse(xhr.responseText);
+                    var errorMessage = responseObj.message;
+                    if (xhr.status === 401) {
+                        document.getElementById('err').style.display="block"
+                        $("#err").text(errorMessage);
+                    } else if (xhr.status === 404) {
+                        document.getElementById('err').style.display="block"
+                        $("#err").text(errorMessage);
+                    } else if (xhr.status === 403) {
+                        document.getElementById('err').style.display="block"
+                        $("#err").text(errorMessage);
+                    } else {
+                        document.getElementById('err').style.display="block"
+                        $("#err").text("Server Error: " + errorMessage);
+                    }
+                } catch (e) {
+                    document.getElementById('err').style.display="block"
+                    $("#err").text(xhr.responseText);
+                }
+            }
+        });
+    });
+});
+
+</script>
+
+</body>
+</html>

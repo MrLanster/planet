@@ -1,0 +1,110 @@
+body {
+    margin: 20px;
+    background-color:#EEE8FF;
+}
+
+.profile-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border: 4px solid #9878F4; 
+    border-radius: 50%;
+    overflow: hidden; 
+}
+
+.profile-image {
+    width: 80px; 
+    height: 100px; 
+    object-fit: cover; 
+    border-radius: 50%;
+}
+
+
+.profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.bell-container {
+    position: absolute;
+    top:20px;
+    right: 10px;
+}
+
+.bell-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.center-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.center-image {
+
+    width: 50px;
+    height: 50px;
+}
+
+.purple-text {
+    color: #9878F4;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 20px;
+    margin-top: 10px;
+}
+.top-center{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+
+
+}
+
+.greeting {
+    position: relative;
+    left:30px;
+    top:40px;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#greet1{
+
+    color:#9878F4;
+}
+
+
+.image-container {
+    position: relative;
+    left:50px;
+    max-width: 400px; /* Adjust the maximum width as needed */
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(150, 120, 244, 0.7); /* Purple shaded shadow */
+    border-radius: 15px; /* Rounded edges */
+    top:70px;
+
+}
+
+img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 15px 15px 0 0; /* Rounded top edges */
+}
+
+.description {
+    padding: 15px;
+    background-color: #fff; /* Set a background color for the description */
+    border-radius: 0 0 15px 15px; /* Rounded bottom edges */
+}
+
+.description p {
+    margin: 0;
+}

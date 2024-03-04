@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <style>
+        html, body {
+            margin: 0;
+        }
+
+        :root {
+            --font: "Poppins", sans-serif;
+            --primary: blueviolet;
+        }
+
+        .container {
+            width: 400px;
+            height: fit-content;
+            margin: auto;
+            background-color: transparent;
+            scale: 0.9;
+        }
+
+        @media screen and (max-width: 400px) {
+            body {
+                overflow: hidden;
+                margin: 20px;
+                min-width: 400px;
+            }
+        }
+
+        .top_bar {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .back_button {
+            background-color: transparent;
+            color: var(--primary);
+            border: 0;
+            outline: 0;
+            font-size: 50px;
+            width: 10px;
+            margin-left: -15px;
+        }
+
+        .logo {
+            width: 70px;
+            margin-left: auto;
+        }
+
+        h2 {
+            font-family: var(--font);
+            font-size: 30px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            margin-top: 20px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            border-bottom: 2px solid var(--primary);
+            background-color: transparent;
+            box-sizing: border-box;
+        }
+
+        input[type="date"] {
+            /* Additional styling for date input */
+            appearance: none;
+            padding: 10px;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            background-color: transparent;
+            border: none;
+            border-bottom: 2px solid var(--primary);
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: var(--primary);
+            color: #fff;
+            cursor: pointer;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top_bar">
+            <button class="back_button">&lt;</button>
+            <img class="logo" src="/static/images/Logo.png" alt="Planet Logo">
+        </div>
+        <h2>Edit Profile</h2>
+
+        <form action="/update-profile" method="post">
+            <!-- Image Upload -->
+            <input type="file" id="profileImage" name="profileImage" accept="image/*">
+
+            <label for="name">New Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter new name" required>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" required>
+
+            <!-- Submit Button -->
+            <input type="submit" value="Save Changes">
+        </form>
+    </div>
+</body>
+</html>

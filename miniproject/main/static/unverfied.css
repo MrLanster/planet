@@ -1,0 +1,73 @@
+body{
+    margin: 0;
+}
+:root{
+    --font:"Poppins", sans-serif;
+    --primary:#e81900
+}
+.container{
+    width: 400px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    margin-top: 20px;
+   background-color: white;
+   padding: 10px;
+   border-radius: 5px;
+   border: 1px solid grey;
+   text-align: center;
+}
+@media screen and (max-width:400px) {
+    body{
+        overflow: hidden;
+        margin: 20px;
+        min-width: 400px;
+    }
+}
+.container > i{
+    font-size: 50px;
+    color:white;
+    background-color: var(--primary);
+    height: 80px;
+    width: 80px;
+    border-radius: 1000px;
+    text-align: center;
+    line-height:75px;
+    margin: 10px auto;
+}
+.container > h5{
+    font-size: 15px;
+    font-family: var(--font);
+    font-weight: 300;
+    margin: 10px;
+    margin-top: 0px;
+}
+.container > p{
+    font-family: var(--font);
+    font-size: 12px;
+    font-weight: bold;
+}
+.container > p >a{
+    text-decoration: none;
+    color: var(--primary);
+}
+#resendButton{
+    border:0;
+    outline: 0;
+    color: white;
+    background-color: var(--primary);
+    width: 150px;
+    height: 37.5px;
+    border-radius: 5px;
+    margin:10px auto;
+    font-family: var(--font);
+    font-weight: bold;
+    font-size: 15px;
+}
+#resendButton > p{
+    margin: 0ch;
+}
+#resendButton:disabled{
+    background-color: #e817007a;
+}

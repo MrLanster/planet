@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-image: url('/static/images/Shape.png');
+            
+            background-size: 900px,600px; /* Display the background image once */
+            
+            background-position: right bottom; /* Positioned in the bottom right corner */
+            background-repeat: no-repeat; /* Do not repeat the background image */
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 5px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, .description {
+            color: black;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 4em;
+            margin-bottom: 5px;
+            color: blueviolet;
+            
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .login-buttons {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .button {
+            width: 250px;
+            padding: 15px;
+            margin: 10px;
+            text-align: center;
+            color: black;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            border-radius: 15px;
+            transition: background-color 0.3s, box-shadow 0.3s, color 0.3s;
+            background-color: #fff;
+            box-shadow: 0 12px 18px rgba(0, 0, 0, 0.3);
+        }
+
+        .button:hover {
+            background-color: #f2f2f2;
+        }
+
+        .google-logo, .email-logo {
+            width: 25px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            body {
+                background-position: right bottom; /* Adjusted for mobile */
+                
+                background-size: 500px,1500px; /* Display the background image once */
+
+            }
+
+            h1, h2 {
+                font-size: 2.5em;
+            }
+
+            #logo {
+                width: 80px;
+            }
+
+            .button {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <img id="logo" src="/static/images/Logo.png" alt="Planet Logo">
+    <h1>Planet</h1>
+    <h2>Mini Social Media</h2>
+    <p class="description">Welcome to our world of enjoyment!</p>
+
+    <div class="login-buttons">
+        <a href="/login/" class="button email-button"><img class="email-logo" src="/static/images/mail.png" alt="Email Logo">Continue with Email</a>
+        <a href="#" class="button google-button"><img class="google-logo" src="/static/images/Google%20Logo.png" alt="Google Logo">Continue with Google</a>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=0.9, user-scalable=no">
+    <link rel="stylesheet" href="/static/unverfied.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    <title>Unverified Page</title>
+</head>
+<body>
+    <div class="container">
+        <i class="fa fa-close"></i>
+        <h5>This account is unverfied please verify using the link send to your email <b>{{email}}</b></h5>
+        <button id="resendButton" onclick="window.location.href='/resend'" disabled><p id="countdown"></p></button>
+        <p>Already verfied? <a href="/login/">login</a></p>
+    </div>
+    
+    
+    <p id="timer" style="display: none;">{{ timer_duration }}</p>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        function resendEmail() {
+            alert('Resending email...');
+        }
+
+        function startTimer(duration, display) {
+            let timer = duration;
+            let intervalId = setInterval(function () {
+                let minutes = parseInt(timer / 60, 10);
+                let seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(intervalId);
+                    display.textContent = "Resend Email";
+                    document.getElementById('resendButton').disabled = false;
+                }
+            }, 1000);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            let duration = parseInt($("#timer").text()); 
+            let display = document.getElementById('countdown');
+            startTimer(duration, display);
+        });
+    </script>
+</body>
+</html>
