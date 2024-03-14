@@ -29,5 +29,6 @@ urlpatterns = [
     path("verify/<str:hash_value>",views.verify,name="verify"),
     path("cart/<str:value>/<int:qu>",views.cart,name="cart"),
     path("delete/<str:value>",views.delete,name="delete"),
-    path("getCart",views.get_cart,name="get_cart")
+    path("getCart",views.get_cart,name="get_cart"),
+    path("upload",views.upload_image,name="upload_image")
 ]

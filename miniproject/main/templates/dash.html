@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/dash.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <title>Dashboard</title>
 </head>
 <body>
@@ -28,7 +30,7 @@
 	  <div class="image-container">
 	    <img src="/static/images/coco.jpg" alt="Image Description">
 		                <div class="glassy-footer">
-	     <button class="like-button" onlick="likeIt()">
+	     <button class="like-button" onclick="likeIt()">
 		                    <div class="like-wrapper">
 		                    <div class="ripple"></div>
 		                    <svg class="heart" width="24" height="24" viewBox="0 0 24 24">
@@ -49,8 +51,64 @@
 	    <div class="description">
 		<p>Your description goes here.</p>
 	    </div>
-	</div>
-	</div>
+		<!-- upload_image.html -->
+		<form id="uploadForm" enctype="multipart/form-data">
+			{% csrf_token %}
+			<input type="file" name="image" id="imageInput">
+			<button type="submit" id="uploadButton">Upload</button>
+		</form>
+		<div id="progressWrapper" style="display: none;">
+			<progress id="progressBar" value="0" max="100"></progress>
+			<span id="progressPercent">0%</span>
+		</div>
+		
 
+	</div>
+	</div>
+	<script>
+		$(document).ready(function() {
+    $('#uploadForm').submit(function(event) {
+		console.log("as");
+        event.preventDefault();
+        var formData = new FormData($(this)[0]);
+
+        $.ajax({
+            url: '/upload',  // URL to your upload view
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener('progress', function(evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = (evt.loaded / evt.total) * 100;
+                        $('#progressBar').val(percentComplete);
+                        $('#progressPercent').text(percentComplete.toFixed(2) + '%');
+                    }
+                }, false);
+                return xhr;
+            },
+            beforeSend: function() {
+                $('#uploadButton').prop('disabled', true);
+                $('#progressWrapper').show();
+            },
+            success: function(data) {
+                alert('Upload successful!');
+                // You can redirect or do something else upon successful upload
+            },
+            error: function(xhr, status, error) {
+                alert('Upload failed: ' + error);
+            },
+            complete: function() {
+                $('#uploadButton').prop('disabled', false);
+                $('#progressWrapper').hide();
+            }
+        });
+    });
+});
+
+	</script>
 </body>
+
 </html>

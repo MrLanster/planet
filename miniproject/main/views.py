@@ -6,6 +6,9 @@ from .models import User
 from django.contrib.auth.hashers import make_password, check_password
 import time
 from .models import Verify_Email,Cart,CartItem
+import os
+import random
+import string
 
 
 array={"Apple":2,"Orange":3,"Book":10,"Cookies":1}
@@ -138,7 +141,8 @@ def logout(request):
 
 def dash(request):
     if request.session.get("user"):
-        context = {'user': request.session["user"]}
+        csrf_token = get_token(request)
+        context = {'user': request.session["user"],'csrf_token': csrf_token}
         template = loader.get_template('dash.html')
         rendered_template = template.render(context, request)
         return HttpResponse(rendered_template)
@@ -209,3 +213,22 @@ def signup(request):
         template = loader.get_template('signup.html')
         rendered_template = template.render(context, request)
         return HttpResponse(rendered_template)
+
+def upload_image(request):
+    if request.method == 'POST' and request.FILES.get('image'):
+        image = request.FILES['image']
+        
+        random_filename = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+        _, extension = os.path.splitext(image.name)
+        _, extension = os.path.split('.')
+        new_filename = random_filename + extension
+        
+        image.name = new_filename
+        user = request.session.get("user")
+        cart, created = Cart.objects.get_or_create(user=user)
+
+        cart.add_item(filename=new_filename)
+        cart.save()
+        
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False, 'message': 'No image file provided'})
