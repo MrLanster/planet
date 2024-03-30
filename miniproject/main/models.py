@@ -8,7 +8,8 @@ class User(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)  
     password = models.CharField(max_length=128)  
-    email_verified = models.BooleanField(default=False)  #
+    email_verified = models.BooleanField(default=False)  
+    profile = models.CharField(max_length=100, default='none.png',null=True)
     additional_params = models.TextField(blank=True, null=True) 
 
     def __str__(self):
@@ -37,7 +38,7 @@ class Cart(models.Model):
         return f"Cart for {self.user.username}"
 
     def add_item(self,filename):
-        CartItem.objects.create(cart=self, filename=filename)
+        CartItem.objects.get_or_create(cart=self, filename=filename)
 
     def remove_item(self, item_name):
         self.cartitem_set.filter(item=item_name).delete()

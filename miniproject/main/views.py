@@ -9,56 +9,36 @@ from .models import Verify_Email,Cart,CartItem
 import os
 import random
 import string
+from django.http import StreamingHttpResponse
+from django.views.generic import View
+import time
+from .face_recogniser import check_image_for_profiles
 
-
-array={"Apple":2,"Orange":3,"Book":10,"Cookies":1}
+def get_user_cart_filenames(user_name):
+    try:
+        user_cart = Cart.objects.get(user__name=user_name)
+        cart_items = user_cart.cartitem_set.all()
+        filenames = [item.filename for item in cart_items]
+        return filenames
+    except Cart.DoesNotExist:
+        return []
 
 def get_cart(request):
-    user = request.session.get("user")
-    try:
-        cart_items = CartItem.objects.filter(cart__user=user)
-        cart_data = [{'item': item.item, 'quantity': item.quantity,"price":item.price} for item in cart_items]
-        return JsonResponse({'cart': cart_data})
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
-
-def cart(request, value, qu):
-    user = request.session.get("user")
-    try:
-        cart, created = Cart.objects.get_or_create(user=user)
-        
-        qu = int(qu)
-        
-        if value in array and qu > 0:
-            price = qu * array[value]
-            cart.add_item(item_name=value, quantity=qu, price=price)
-            cart.save()
-            return JsonResponse({"status": "ok"}, status=200)
-        else:
-            return JsonResponse({"status": "bad", "error": "Invalid item or quantity"}, status=400)
-    except ValueError:
-        return JsonResponse({"status": "bad", "error": "Invalid quantity format"}, status=400)
-    except Exception as e:
-        return JsonResponse({"status": "bad", "error": str(e)}, status=500)
-
-
-def delete(request, value):
-    try:
-        user = request.session.get("user")
-        cart, created = Cart.objects.get_or_create(user=user)
-        cart.remove_item(item_name=value)
-        cart.save()
-        return JsonResponse({"status": "ok"}, status=200)
-    except Exception as e:
-        return JsonResponse({"status": "bad"}, status=500)
-        
+    all_carts = Cart.objects.all()
+    
+    cart_data = []
+    for cart in all_carts:
+        cart_items = cart.cartitem_set.all()
+        cart_data.extend([{'username': cart.user.name, 'filename': item.filename} for item in cart_items])
+    
+    return JsonResponse({'cart': cart_data})
 
 def verify(request, hash_value):
     try:
         verify_email = Verify_Email.objects.get(hash=hash_value)
         user = User.objects.get(email=verify_email.email)
         request.session.clear()
-        request.session["user"]=user.name
+        request.session["user"]=user
         user.email_verified = 1
         user.save()
         verify_email.delete()
@@ -87,10 +67,10 @@ def resend(request):
             
             if created or not verify_email.hash:
                 verify_email.generate_unique_hash()
-                send_verification_email(email, verify_email.hash)  # Call send_verification_email
+                send_verification_email(email, verify_email.hash)  
             else:
                 verify_email.generate_unique_hash()
-                send_verification_email(email, verify_email.hash)  # Call send_verification_email
+                send_verification_email(email, verify_email.hash)  
                 
             return redirect("unverified")
         else:
@@ -150,7 +130,8 @@ def dash(request):
         return redirect("login")
 
 def index(request):
-    
+    global event_data
+    event_data="hello"
     template = loader.get_template('home.html')
     return HttpResponse(template.render())
 
@@ -214,21 +195,51 @@ def signup(request):
         rendered_template = template.render(context, request)
         return HttpResponse(rendered_template)
 
+
+def profile_upload(request):
+    if request.method == 'POST' and request.FILES.get('image'):
+        image = request.FILES['image']
+        random_filename = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+        _, extension = os.path.splitext(image.name)
+        new_filename = random_filename + extension
+        
+        upload_directory = "main/static/"
+        
+        os.makedirs(upload_directory, exist_ok=True)
+        
+        with open(os.path.join(upload_directory, new_filename), 'wb+') as destination:
+            for chunk in image.chunks():
+                destination.write(chunk)
+        
+        user = request.session.get("user")
+        user.profile = new_filename
+
+        user.save()
+        return JsonResponse({'success': True, 'message': 'Image uploaded successfully'})
+    else:
+        return JsonResponse({'success': False, 'message': 'No image file provided'})
+
 def upload_image(request):
     if request.method == 'POST' and request.FILES.get('image'):
         image = request.FILES['image']
-        
         random_filename = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
         _, extension = os.path.splitext(image.name)
-        _, extension = os.path.split('.')
         new_filename = random_filename + extension
         
-        image.name = new_filename
+        upload_directory = "main/static/"
+        
+        os.makedirs(upload_directory, exist_ok=True)
+        
+        with open(os.path.join(upload_directory, new_filename), 'wb+') as destination:
+            for chunk in image.chunks():
+                destination.write(chunk)
+        
         user = request.session.get("user")
         cart, created = Cart.objects.get_or_create(user=user)
-
         cart.add_item(filename=new_filename)
         cart.save()
+        print(check_image_for_profiles(new_filename))
         
-        return JsonResponse({'success': True})
-    return JsonResponse({'success': False, 'message': 'No image file provided'})
+        return JsonResponse({'success': True, 'message': 'Image uploaded successfully'})
+    else:
+        return JsonResponse({'success': False, 'message': 'No image file provided'})

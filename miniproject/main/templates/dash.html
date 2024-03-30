@@ -51,8 +51,13 @@
 	    <div class="description">
 		<p>Your description goes here.</p>
 	    </div>
-		<!-- upload_image.html -->
 		<form id="uploadForm" enctype="multipart/form-data">
+			{% csrf_token %}
+			<input type="file" name="image" id="imageInput">
+			<button type="submit" id="uploadButton">Upload</button>
+		</form>
+        <p>profile upload</p>
+        <form id="uploadForm2" enctype="multipart/form-data">
 			{% csrf_token %}
 			<input type="file" name="image" id="imageInput">
 			<button type="submit" id="uploadButton">Upload</button>
@@ -73,7 +78,7 @@
         var formData = new FormData($(this)[0]);
 
         $.ajax({
-            url: '/upload',  // URL to your upload view
+            url: '/upload',  
             type: 'POST',
             data: formData,
             processData: false,
@@ -95,7 +100,44 @@
             },
             success: function(data) {
                 alert('Upload successful!');
-                // You can redirect or do something else upon successful upload
+            },
+            error: function(xhr, status, error) {
+                alert('Upload failed: ' + error);
+            },
+            complete: function() {
+                $('#uploadButton').prop('disabled', false);
+                $('#progressWrapper').hide();
+            }
+        });
+    });
+    $('#uploadForm2').submit(function(event) {
+		console.log("as");
+        event.preventDefault();
+        var formData = new FormData($(this)[0]);
+
+        $.ajax({
+            url: '/profile_upload',  
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            xhr: function() {
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener('progress', function(evt) {
+                    if (evt.lengthComputable) {
+                        var percentComplete = (evt.loaded / evt.total) * 100;
+                        $('#progressBar').val(percentComplete);
+                        $('#progressPercent').text(percentComplete.toFixed(2) + '%');
+                    }
+                }, false);
+                return xhr;
+            },
+            beforeSend: function() {
+                $('#uploadButton').prop('disabled', true);
+                $('#progressWrapper').show();
+            },
+            success: function(data) {
+                alert('Upload successful!');
             },
             error: function(xhr, status, error) {
                 alert('Upload failed: ' + error);
@@ -109,6 +151,7 @@
 });
 
 	</script>
+    
 </body>
 
 </html>
