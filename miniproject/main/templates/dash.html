@@ -151,6 +151,76 @@
 });
 
 	</script>
+<script>
+ /*   $(document).ready(function() {
+        // Function to get notifications
+        function getNotifications() {
+            $.ajax({
+                url: '/notification',  // URL to fetch notifications
+                type: 'GET',
+                success: function(data) {
+                    var value = data.value;
+                    if (value == 1) {
+                        // If value is 1, make request to /uploads
+                        $.ajax({
+                            url: '/uploads',  // URL to fetch uploads
+                            type: 'GET',
+                            success: function(data) {
+    // Process the received data
+    for (var i = 0; i < data.length; i++) {
+        var item = data[i];
+
+        // Convert "None" tags to an empty array
+        if (item.tags === "None") {
+            item.tags = [];
+        }
+
+        // Create a new image container div
+        var newImageContainer = $('<div class="image-container"></div>');
+
+        // Set the image source
+        var imgSrc = "/static/" + item.filename;
+        newImageContainer.append('<img src="' + imgSrc + '" alt="Image Description">');
+
+        // Set the profile picture source
+        var profilePicSrc = "/static/" + item.profile;
+        var profilePicDiv = $('<div class="profile-pic"></div>');  // Create profile picture div
+        var profilePicImg = $('<img src="' + profilePicSrc + '" alt="Profile Picture">');  // Create profile picture img
+        profilePicDiv.append(profilePicImg);  // Append profile picture img to profile picture div
+        newImageContainer.append(profilePicDiv);  // Append profile picture div to image container
+
+        // Set the name and tags
+        var description = '<div class="description"><p>' + item.name + '</p>';
+        if (item.tags.length > 0) {
+            description += '<p>Tags: ' + item.tags.join(', ') + '</p>';
+        }
+        description += '</div>';
+        newImageContainer.append(description);
+
+        // Insert the new image container above the current one
+        $('.image-container').before(newImageContainer);
+    }
+},
+
+
+
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('Failed to fetch notifications: ' + error);
+                }
+            });
+        }
+
+        // Call the getNotifications function initially
+        getNotifications();
+
+        // Set interval to periodically call getNotifications function
+        setInterval(getNotifications, 5000);  // Call every 5 seconds
+    });*/
+</script>
+
     
 </body>
 

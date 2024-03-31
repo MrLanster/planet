@@ -30,4 +30,6 @@ urlpatterns = [
     path("getCart",views.get_cart,name="get_cart"),
     path("upload",views.upload_image,name="upload_image"),
     path("profile_upload",views.profile_upload,name="profile_upload"),
+    path("uploads",views.uploads_json,name="uploads"),
+    path("notification",views.notify,name="notify"),
 ]

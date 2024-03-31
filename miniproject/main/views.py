@@ -5,7 +5,7 @@ from django.middleware.csrf import get_token
 from .models import User
 from django.contrib.auth.hashers import make_password, check_password
 import time
-from .models import Verify_Email,Cart,CartItem
+from .models import Verify_Email,Cart,Uploads
 import os
 import random
 import string
@@ -130,8 +130,7 @@ def dash(request):
         return redirect("login")
 
 def index(request):
-    global event_data
-    event_data="hello"
+    request.session["value"]=1
     template = loader.get_template('home.html')
     return HttpResponse(template.render())
 
@@ -238,8 +237,35 @@ def upload_image(request):
         cart, created = Cart.objects.get_or_create(user=user)
         cart.add_item(filename=new_filename)
         cart.save()
-        print(check_image_for_profiles(new_filename))
+        tags=str(check_image_for_profiles(new_filename))
+        if tags==None:
+            tags=str("[]")
+        u=Uploads.objects.create(name=user.name,profile_name=user.profile,filename=str(new_filename),tags=tags)
+        u.save()
         
         return JsonResponse({'success': True, 'message': 'Image uploaded successfully'})
     else:
         return JsonResponse({'success': False, 'message': 'No image file provided'})
+    
+    
+def uploads_json(request):
+    uploads = Uploads.objects.all()
+
+    data = []
+    for upload in uploads:
+        data.append({
+            'name': upload.name,
+            'filename': upload.filename,
+            "profile":upload.profile_name,
+            'tags': upload.tags,
+        })
+
+    return JsonResponse(data, safe=False)
+
+def notify(request):
+    try:
+        val=1
+        return JsonResponse({"value":str(val)})
+    except:
+        return JsonResponse({"value":str(0)})
+    

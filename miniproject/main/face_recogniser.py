@@ -14,16 +14,21 @@ def check_image_for_profiles(image_name):
     profiles = User.objects.all()
 
     matching_profiles = []
+    try:
 
-    for profile in profiles:
-        profile_image_path = os.path.join(os.path.dirname(__file__), 'static', profile.profile)
-        profile_image = face_recognition.load_image_file(profile_image_path)
-        profile_encoding = face_recognition.face_encodings(profile_image)[0]  
+        for profile in profiles:
+            profile_image_path = os.path.join(os.path.dirname(__file__), 'static', profile.profile)
+            profile_image = face_recognition.load_image_file(profile_image_path)
+            profile_encoding = face_recognition.face_encodings(profile_image)[0]  
 
-        matches = face_recognition.compare_faces(face_encodings, profile_encoding)
+            matches = face_recognition.compare_faces(face_encodings, profile_encoding)
 
-        if True in matches:
-            matching_profiles.append(profile.name)  
-
-    return matching_profiles
+            if True in matches:
+                matching_profiles.append(profile.name)  
+        if len(matching_profiles)==0:
+            return None
+        return matching_profiles
+    except:
+        print("No faces matched!")
+        return None
 

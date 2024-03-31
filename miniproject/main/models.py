@@ -3,6 +3,15 @@ import hashlib
 import random
 import string
 
+class Uploads(models.Model):
+    uid = models.AutoField(primary_key=True) 
+    name = models.CharField(max_length=100)
+    profile_name=models.CharField(max_length=100)
+    filename = models.CharField(max_length=128)
+    tags = models.CharField(max_length=128)
+    def __str__(self):
+        return self.name
+
 class User(models.Model):
     uid = models.AutoField(primary_key=True) 
     name = models.CharField(max_length=100)
