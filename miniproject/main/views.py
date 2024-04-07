@@ -13,6 +13,8 @@ from django.http import StreamingHttpResponse
 from django.views.generic import View
 import time
 from .face_recogniser import check_image_for_profiles
+from . import helper
+import threading
 
 def get_user_cart_filenames(user_name):
     try:
@@ -110,7 +112,9 @@ def unverified(request):
         return HttpResponse("Verification not started or user not logged in")
 
 def send_verification_email(email, hash_value):
-    print("verify email here: /verify/"+hash_value)
+    url="http://127.0.0.1:8000/verify/"+str(hash_value)
+    helper.send_verification_email(email,url)
+    
 
 def logout(request):
     if "user" in request.session:
@@ -218,6 +222,22 @@ def profile_upload(request):
     else:
         return JsonResponse({'success': False, 'message': 'No image file provided'})
 
+def reg_thread(user,new_filename):
+    tags=str(check_image_for_profiles(new_filename))
+    if tags==None:
+        tags=str("[]")
+    upload_obj, created = Uploads.objects.get_or_create(filename=str(new_filename))
+
+    if not created:
+        upload_obj.name = user.name
+        upload_obj.profile_name = user.profile
+        upload_obj.tags = tags
+        upload_obj.save()
+    else:
+        u = Uploads.objects.create(name=user.name, profile_name=user.profile, filename=str(new_filename), tags=tags)
+        u.save()
+    
+
 def upload_image(request):
     if request.method == 'POST' and request.FILES.get('image'):
         image = request.FILES['image']
@@ -237,11 +257,11 @@ def upload_image(request):
         cart, created = Cart.objects.get_or_create(user=user)
         cart.add_item(filename=new_filename)
         cart.save()
-        tags=str(check_image_for_profiles(new_filename))
-        if tags==None:
-            tags=str("[]")
-        u=Uploads.objects.create(name=user.name,profile_name=user.profile,filename=str(new_filename),tags=tags)
+        t=threading.Thread(target=reg_thread,args=(user,new_filename))
+        t.start()
+        u = Uploads.objects.create(name=user.name, profile_name=user.profile, filename=str(new_filename), tags="Processing image..Please wait")
         u.save()
+
         
         return JsonResponse({'success': True, 'message': 'Image uploaded successfully'})
     else:
