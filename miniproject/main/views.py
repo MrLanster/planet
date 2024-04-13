@@ -12,7 +12,6 @@ import string
 from django.http import StreamingHttpResponse
 from django.views.generic import View
 import time
-from .face_recogniser import check_image_for_profiles
 from . import helper
 import threading
 
@@ -222,21 +221,10 @@ def profile_upload(request):
     else:
         return JsonResponse({'success': False, 'message': 'No image file provided'})
 
-def reg_thread(user,new_filename):
-    tags=str(check_image_for_profiles(new_filename))
-    if tags==None:
-        tags=str("[]")
-    upload_obj, created = Uploads.objects.get_or_create(filename=str(new_filename))
+import subprocess
 
-    if not created:
-        upload_obj.name = user.name
-        upload_obj.profile_name = user.profile
-        upload_obj.tags = tags
-        upload_obj.save()
-    else:
-        u = Uploads.objects.create(name=user.name, profile_name=user.profile, filename=str(new_filename), tags=tags)
-        u.save()
-    
+from PIL import Image as PILImage
+
 
 def upload_image(request):
     if request.method == 'POST' and request.FILES.get('image'):
@@ -249,23 +237,24 @@ def upload_image(request):
         
         os.makedirs(upload_directory, exist_ok=True)
         
-        with open(os.path.join(upload_directory, new_filename), 'wb+') as destination:
-            for chunk in image.chunks():
-                destination.write(chunk)
+        # Resize the image to reduce memory usage
+        img = PILImage.open(image)
+        img.thumbnail((800, 800))  # Resize the image to a maximum width and height of 800 pixels
+        img.save(os.path.join(upload_directory, new_filename))
         
         user = request.session.get("user")
         cart, created = Cart.objects.get_or_create(user=user)
         cart.add_item(filename=new_filename)
         cart.save()
-        t=threading.Thread(target=reg_thread,args=(user,new_filename))
-        t.start()
-        u = Uploads.objects.create(name=user.name, profile_name=user.profile, filename=str(new_filename), tags="Processing image..Please wait")
-        u.save()
-
+        
+        # Launch a detached subprocess to handle image processing
+        subprocess.Popen(["python", str(os.getcwd())+"\\main\\process_image.py", str(user.uid), str(user.name),str(user.profile),new_filename])
         
         return JsonResponse({'success': True, 'message': 'Image uploaded successfully'})
     else:
         return JsonResponse({'success': False, 'message': 'No image file provided'})
+
+
     
     
 def uploads_json(request):

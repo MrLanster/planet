@@ -1,28 +1,78 @@
 import os
-from django.conf import settings
 from PIL import Image
-from .models import User
+import sqlite3
 import face_recognition
 import json
 
-def check_image_for_profiles(image_name):
-    users=User.objects.all()
-    dir=os.getcwd()+"\\main\\static\\"
-    known_images = {}
-    for i in users:
-        known_images[i.name]=dir+i.profile
-    # Load the known images (the images of people you want to recognize)
+
+# Function to update the database
+def update_database(uid, name, profile_name, filename, tags):
+    # Connect to SQLite database
+    conn = sqlite3.connect('db.sqlite3')
+    cursor = conn.cursor()
+    # Update the record in the main_uploads table based on the uid
+    cursor.execute("UPDATE main_uploads SET name=?, profile_name=?, filename=?, tags=? WHERE uid=?", 
+                   (name, profile_name, filename, tags, uid))
+    conn.commit()
+    conn.close()
+
     
+def starter(name, profile_name, filename, tags):
+    # Connect to SQLite database
+    conn = sqlite3.connect('db.sqlite3')
+    cursor = conn.cursor()
+    # Insert a new record into the Uploads table
+    cursor.execute("INSERT INTO main_uploads (name, profile_name, filename, tags) VALUES (?, ?, ?, ?)", (name, profile_name, filename, tags))
+    conn.commit()
+    uid = cursor.lastrowid
+    conn.close()
+    return uid
+
+
+def check_image_for_profiles(image_name,name,profile_name,filename):
+    uid=starter(name,profile_name,filename,"Processing Image Please Wait...")
+    # Perform image recognition
+    print("starting..")
+    # Connect to SQLite database
+    # Get the current working directory
+    current_directory = os.getcwd()
+
+    # Get the parent directory
+    # Move one level up
+    os.chdir("..")
+    os.chdir("miniproject")
+    print(os.getcwd())
+    conn = sqlite3.connect('db.sqlite3')
+    cursor = conn.cursor()
+
+    # Fetch user information from the database
+    cursor.execute("SELECT name, profile FROM main_user")
+    users = cursor.fetchall()
+
+    # Construct the directory path
+    dir = os.path.join(os.getcwd(), "main", "static")
+
+    known_images = {}
+    known_encodings = []
 
     # Encode the known images
-    known_encodings = []
-    for known_image_file in known_images.values():
-        known_image = face_recognition.load_image_file(known_image_file)
-        known_encoding = face_recognition.face_encodings(known_image)[0]
-        known_encodings.append(known_encoding)
+    for user_name, profile_name in users:
+        profile_path = os.path.join(dir, profile_name)
+        if os.path.exists(profile_path):
+            known_image = face_recognition.load_image_file(profile_path)
+            face_encodings = face_recognition.face_encodings(known_image)
+            if face_encodings:
+                known_encoding = face_encodings[0]  # Take the first face encoding if found
+                known_encodings.append(known_encoding)
+                known_images[user_name] = profile_path
+            else:
+                print(f"No face found in profile image for user: {user_name}")
+        else:
+            print(f"Profile image not found for user: {user_name}")
 
-    # Load the test image (the image in which you want to recognize faces)
-    test_image = face_recognition.load_image_file(dir+image_name)
+    # Load the test image
+    test_image_path = os.path.join(dir, image_name)
+    test_image = face_recognition.load_image_file(test_image_path)
 
     # Find all the face locations and encodings in the test image
     face_locations = face_recognition.face_locations(test_image, model="cnn")
@@ -41,9 +91,16 @@ def check_image_for_profiles(image_name):
             if match:
                 name = list(known_images.keys())[i]
                 break
-        if name!="Unknown":
+        if name != "Unknown":
             recognized_faces.append(name)
 
     # Convert the recognized faces list to JSON
     recognized_json = json.dumps(recognized_faces)
-    return recognized_json
+
+    # Close the database connection
+    conn.close()
+
+    update_database(uid,name, profile_name, filename, recognized_json)
+    print("completed!")
+
+
