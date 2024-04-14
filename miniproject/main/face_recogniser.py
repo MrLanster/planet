@@ -67,8 +67,10 @@ def check_image_for_profiles(image_name,name,profile_name,filename):
                 known_images[user_name] = profile_path
             else:
                 print(f"No face found in profile image for user: {user_name}")
+                continue
         else:
             print(f"Profile image not found for user: {user_name}")
+            continue
 
     # Load the test image
     test_image_path = os.path.join(dir, image_name)
