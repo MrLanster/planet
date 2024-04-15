@@ -11,8 +11,8 @@ def update_database(uid, name, profile_name, filename, tags):
     conn = sqlite3.connect('db.sqlite3')
     cursor = conn.cursor()
     # Update the record in the main_uploads table based on the uid
-    cursor.execute("UPDATE main_uploads SET name=?, profile_name=?, filename=?, tags=? WHERE uid=?", 
-                   (name, profile_name, filename, tags, uid))
+    cursor.execute("UPDATE main_uploads SET tags=? WHERE uid=?", 
+                   (tags, uid))
     conn.commit()
     conn.close()
 
