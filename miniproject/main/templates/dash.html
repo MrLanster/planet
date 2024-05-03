@@ -9,67 +9,56 @@
     <title>Dashboard</title>
 </head>
 <body>
-
-    <div class="profile-container">
-        <img src="/static/images/demo.JPG" alt="Profile Picture" class="profile-pic">
+    
+        <div class="profile-container">
+            <img src="/static/{{profile}}" alt="Profile Picture" class="profile-pic">
+        </div>
+        <div class="top-center">
+        <img src="/static/images/Logo.png" alt="Center Image" class="center-image">
+        <p class="purple-text">Planet</p>
     </div>
-    <div class="top-center">
-      <img src="/static/images/Logo.png" alt="Center Image" class="center-image">
-      <p class="purple-text">Planet</p>
-  </div>
 
-    <div class="bell-container">
-        <img src="/static/images/bell.png" alt="Bell Icon" class="bell-icon">
+        <div class="bell-container">
+            <img src="/static/images/bell.png" alt="Bell Icon" class="bell-icon">
+        </div>
+        <div class="center-container">
+            <div class="greeting">
+            <b><h id="greet">Hello,</h></b>
+            <b><h id="greet1">{{user}}</h></b>
+
+        </div>
+    
+      <div id="Paris" class="tabcontent">
+
     </div>
-    <div class="center-container">
-	    <div class="greeting">
-	      <b><h id="greet">Hello,</h></b>
-	      <b><h id="greet1">Arun Thomas</h></b>
 
-	  </div>
-	  <div class="image-container">
-	    <img src="/static/images/coco.jpg" alt="Image Description">
-		                <div class="glassy-footer">
-	     <button class="like-button" onclick="likeIt()">
-		                    <div class="like-wrapper">
-		                    <div class="ripple"></div>
-		                    <svg class="heart" width="24" height="24" viewBox="0 0 24 24">
-		                        <path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"></path>
-		                    </svg>
-		                    <div class="particles" style="--total-particles: 6">
-		                        <div class="particle" style="--i: 1; --color: #7642F0"></div>
-		                        <div class="particle" style="--i: 2; --color: #AFD27F"></div>
-		                        <div class="particle" style="--i: 3; --color: #DE8F4F"></div>
-		                        <div class="particle" style="--i: 4; --color: #D0516B"></div>
-		                        <div class="particle" style="--i: 5; --color: #5686F2"></div>
-		                        <div class="particle" style="--i: 6; --color: #D53EF3"></div>
-		                    </div>
-		                    </div>
-		                </button>
-		                <i class="fa-solid fa-comment"></i>
-		                </div>
-	    <div class="description">
-		<p>Your description goes here.</p>
-	    </div>
-		<form id="uploadForm" enctype="multipart/form-data">
-			{% csrf_token %}
-			<input type="file" name="image" id="imageInput">
-			<button type="submit" id="uploadButton">Upload</button>
-		</form>
-        <p>profile upload</p>
-        <form id="uploadForm2" enctype="multipart/form-data">
-			{% csrf_token %}
-			<input type="file" name="image" id="imageInput">
-			<button type="submit" id="uploadButton">Upload</button>
-		</form>
-		<div id="progressWrapper" style="display: none;">
-			<progress id="progressBar" value="0" max="100"></progress>
-			<span id="progressPercent">0%</span>
-		</div>
+        <div id="London" class="tabcontent" style="display: none;">
+            <p>Upload Pictures</p>
+
+            <form id="uploadForm" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="image" id="imageInput">
+                <button type="submit" id="uploadButton">Upload</button>
+            </form>
+            <p>profile upload</p>
+                <form id="uploadForm2" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name="image" id="imageInput">
+                    <button type="submit" id="uploadButton">Upload</button>
+                </form>
+                <div id="progressWrapper" style="display: none;">
+                    <progress id="progressBar" value="0" max="100"></progress>
+                    <span id="progressPercent">0%</span>
+                </div>
+        </div>
 		
-
 	</div>
-	</div>
+    <div class="tabB">
+        <div class="tab">
+            <button class="tablinks" id="b1" onclick="openCity(event, 'Paris')"><img src="/static/images/Home.png" alt="Home" class="upload-icon1">;</button>
+            <button class="tablinks" id="b2" onclick="openCity(event, 'London')"><img src="/static/images/Upload.png" alt="Home" class="upload-icon2"> </button>
+        </div>
+    </div>
 	<script>
 		$(document).ready(function() {
     $('#uploadForm').submit(function(event) {
@@ -149,76 +138,189 @@
         });
     });
 });
+function openCity(evt, cityName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
 
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "active"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+
+  // Show the current tab, and add an "active" class to the button that opened the tab
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
 	</script>
 <script>
- /*   $(document).ready(function() {
-        // Function to get notifications
-        function getNotifications() {
-            $.ajax({
-                url: '/notification',  // URL to fetch notifications
-                type: 'GET',
-                success: function(data) {
-                    var value = data.value;
-                    if (value == 1) {
-                        // If value is 1, make request to /uploads
-                        $.ajax({
-                            url: '/uploads',  // URL to fetch uploads
-                            type: 'GET',
-                            success: function(data) {
-    // Process the received data
-    for (var i = 0; i < data.length; i++) {
-        var item = data[i];
+// Variable to store the previous data
+var previousData = [];
 
-        // Convert "None" tags to an empty array
-        if (item.tags === "None") {
-            item.tags = [];
+function fetchDataAndUpdate() {
+    // Make an AJAX request to fetch the data
+    $.ajax({
+        url: '/uploads',
+        method: 'GET',
+        success: function(data) {
+            // Compare current data with previous data
+            if (!isEqual(data, previousData)) {
+                var parentContainer = document.getElementById('Paris');
+
+            // Clear existing images
+            parentContainer.innerHTML = '';
+                // If there are differences, update the images
+                updateImages(data);
+                // Update previousData with the new data
+                previousData = data;
+            }
+        },
+        error: function(err) {
+            console.error('Error fetching data:', err);
         }
-
-        // Create a new image container div
-        var newImageContainer = $('<div class="image-container"></div>');
-
-        // Set the image source
-        var imgSrc = "/static/" + item.filename;
-        newImageContainer.append('<img src="' + imgSrc + '" alt="Image Description">');
-
-        // Set the profile picture source
-        var profilePicSrc = "/static/" + item.profile;
-        var profilePicDiv = $('<div class="profile-pic"></div>');  // Create profile picture div
-        var profilePicImg = $('<img src="' + profilePicSrc + '" alt="Profile Picture">');  // Create profile picture img
-        profilePicDiv.append(profilePicImg);  // Append profile picture img to profile picture div
-        newImageContainer.append(profilePicDiv);  // Append profile picture div to image container
-
-        // Set the name and tags
-        var description = '<div class="description"><p>' + item.name + '</p>';
-        if (item.tags.length > 0) {
-            description += '<p>Tags: ' + item.tags.join(', ') + '</p>';
-        }
-        description += '</div>';
-        newImageContainer.append(description);
-
-        // Insert the new image container above the current one
-        $('.image-container').before(newImageContainer);
+    });
+}
+function isValidJSON(str) {
+    try {
+        JSON.parse(str);
+        return true;
+    } catch (e) {
+        return false;
     }
-},
+}
+// Function to update images
+function updateImages(data) {
+    // Get the existing parent container
+    var data = data.reverse();
 
+    var parentContainer = document.getElementById('Paris');
 
+    // Iterate through the data
+    data.forEach(function(item) {
+        // Create a new image element
+        var img = document.createElement('img');
+        // Set the src attribute to the filename from the data
+        img.src = '/static/' + item.filename;
+        img.alt = 'Image Description';
 
-                        });
-                    }
-                },
-                error: function(xhr, status, error) {
-                    alert('Failed to fetch notifications: ' + error);
-                }
+        // Create the container div
+        var container = document.createElement('div');
+        container.classList.add('image-container');
+
+        // Append the image to the container
+        container.appendChild(img);
+
+        // Create the glassy-footer div
+        var footer = document.createElement('div');
+        footer.classList.add('glassy-footer');
+
+        // Create the like button
+        var likeButton = document.createElement('button');
+        likeButton.classList.add('like-button');
+        likeButton.setAttribute('onclick', 'likeIt()');
+
+        // Create the like wrapper
+        var likeWrapper = document.createElement('div');
+        likeWrapper.classList.add('like-wrapper');
+
+        // Create the ripple effect div
+        var ripple = document.createElement('div');
+        ripple.classList.add('ripple');
+
+        // Create the heart SVG
+        var heartSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        heartSvg.classList.add('heart');
+        heartSvg.setAttribute('width', '24');
+        heartSvg.setAttribute('height', '24');
+        heartSvg.setAttribute('viewBox', '0 0 24 24');
+
+        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', 'M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z');
+        heartSvg.appendChild(path);
+
+        // Create the particles div
+        var particles = document.createElement('div');
+        particles.classList.add('particles');
+        particles.style.setProperty('--total-particles', '6');
+
+        // Append particles to like wrapper
+        likeWrapper.appendChild(ripple);
+        likeWrapper.appendChild(heartSvg);
+        likeWrapper.appendChild(particles);
+
+        // Append like wrapper to like button
+        likeButton.appendChild(likeWrapper);
+
+        // Create the comment icon
+        var commentIcon = document.createElement('i');
+        commentIcon.classList.add('fa-solid', 'fa-comment');
+
+        // Append like button and comment icon to footer
+        footer.appendChild(likeButton);
+        footer.appendChild(commentIcon);
+
+        // Append footer to container
+        container.appendChild(footer);
+
+        // Create the description div
+        var description = document.createElement('div');
+        description.classList.add('description');
+        var p = document.createElement('p');
+        var t = 'People in this photo';
+        try {
+            // Attempt to parse the tags property
+            var tags = JSON.parse(item.tags);
+            
+            // If parsing succeeds, iterate through each tag in the tags array
+            tags.forEach(function(tag) {
+                // Do something with each tag
+                console.log(tag);
             });
+
+            // Output tags to the HTML element
+            var p = document.createElement('p');
+            t="<b>TAGS: </b><br>"
+            p.innerHTML = t+tags.join('<br>'); // Assuming you want to concatenate tags into a string
+            description.appendChild(p);
+        } catch (error) {
+            // If parsing fails, log the error
+            var p = document.createElement('p');
+            p.textContent = "Please wait processing image...";
+            description.appendChild(p);
         }
 
-        // Call the getNotifications function initially
-        getNotifications();
+        // Append description to container
+        container.appendChild(description);
 
-        // Set interval to periodically call getNotifications function
-        setInterval(getNotifications, 5000);  // Call every 5 seconds
-    });*/
+        // Append container to the existing parent container
+        parentContainer.appendChild(container);
+    });
+}
+
+
+// Function to compare two arrays of objects
+function isEqual(arr1, arr2) {
+    if (arr1.length !== arr2.length) return false;
+    for (var i = 0; i < arr1.length; i++) {
+        if (JSON.stringify(arr1[i]) !== JSON.stringify(arr2[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+// Call fetchDataAndUpdate initially
+fetchDataAndUpdate();
+
+// Call fetchDataAndUpdate every 1 second
+setInterval(fetchDataAndUpdate, 1000);
+
 </script>
 
     

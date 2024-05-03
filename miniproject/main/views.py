@@ -111,7 +111,7 @@ def unverified(request):
         return HttpResponse("Verification not started or user not logged in")
 
 def send_verification_email(email, hash_value):
-    url="http://127.0.0.1:8000/verify/"+str(hash_value)
+    url="http://192.168.43.41:8000/verify/"+str(hash_value)
     helper.send_verification_email(email,url)
     
 
@@ -125,7 +125,8 @@ def logout(request):
 def dash(request):
     if request.session.get("user"):
         csrf_token = get_token(request)
-        context = {'user': request.session["user"],'csrf_token': csrf_token}
+        user=request.session["user"]
+        context = {'user': user.name,'csrf_token': csrf_token,"profile":user.profile}
         template = loader.get_template('dash.html')
         rendered_template = template.render(context, request)
         return HttpResponse(rendered_template)

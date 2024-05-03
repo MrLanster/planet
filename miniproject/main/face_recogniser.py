@@ -30,7 +30,7 @@ def starter(name, profile_name, filename, tags):
 
 
 def check_image_for_profiles(image_name,name,profile_name,filename):
-    uid=starter(name,profile_name,filename,"Processing Image Please Wait...")
+    uid=starter(name,profile_name,filename,"[Processing Image Please Wait...]")
     # Perform image recognition
     print("starting..")
     # Connect to SQLite database
