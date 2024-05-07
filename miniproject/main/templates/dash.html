@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/dash.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <title>Dashboard</title>
@@ -11,58 +12,51 @@
 <body>
     
         <div class="profile-container">
-            <img src="/static/{{profile}}" alt="Profile Picture" class="profile-pic">
+            <div style="background-image: url('/static/{{profile}}');" class="profile-pic" id="profileI"></div>
+            <div class="logo">
+                <img src="/static/images/Logo.png" alt="Center Image">
+                <p >Planet</p>
+            </div>
+            <img src="/static/images/bell.png" alt="Bell Icon">
         </div>
-        <div class="top-center">
-        <img src="/static/images/Logo.png" alt="Center Image" class="center-image">
-        <p class="purple-text">Planet</p>
-    </div>
 
-        <div class="bell-container">
-            <img src="/static/images/bell.png" alt="Bell Icon" class="bell-icon">
+        <div class="homepage" id="homepage" style="display: block;">
+            <h3>Hello,<b>{{user}}</b></h3>
+            <div class="posts" id="posts">
+            
+            </div>
+            <div class="gap"></div>
         </div>
-        <div class="center-container">
-            <div class="greeting">
-            <b><h id="greet">Hello,</h></b>
-            <b><h id="greet1">{{user}}</h></b>
 
-        </div>
-    
-      <div id="Paris" class="tabcontent">
 
-    </div>
-
-        <div id="London" class="tabcontent" style="display: none;">
-            <p>Upload Pictures</p>
-
-            <form id="uploadForm" enctype="multipart/form-data">
+    <div class="profilepage" id="profilepage" style="display: none;">
+        <div class="box">
+            <img src="/static/{{profile}}" id="profileI2">
+            <h3>{{user}}</h3>
+            <form id="uploadForm2" enctype="multipart/form-data">
                 {% csrf_token %}
-                <input type="file" name="image" id="imageInput">
-                <button type="submit" id="uploadButton">Upload</button>
+            <label for="imageInput1" class="upload">Change Profile</label>
+            <input type="file" name="image"  id="imageInput1" style="visibility: hidden;">
             </form>
-            <p>profile upload</p>
-                <form id="uploadForm2" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <input type="file" name="image" id="imageInput">
-                    <button type="submit" id="uploadButton">Upload</button>
-                </form>
-                <div id="progressWrapper" style="display: none;">
-                    <progress id="progressBar" value="0" max="100"></progress>
-                    <span id="progressPercent">0%</span>
-                </div>
-        </div>
-		
-	</div>
-    <div class="tabB">
-        <div class="tab">
-            <button class="tablinks" id="b1" onclick="openCity(event, 'Paris')"><img src="/static/images/Home.png" alt="Home" class="upload-icon1">;</button>
-            <button class="tablinks" id="b2" onclick="openCity(event, 'London')"><img src="/static/images/Upload.png" alt="Home" class="upload-icon2"> </button>
+            <button onclick="window.location.href='/logout'">Logout</button>
         </div>
     </div>
+
+
+      <footer>
+        <button class="home" id="home" onclick="tabs('home','profile','homepage','profilepage','block')"><img src="/static/images/Home.png"></button>
+
+        <form id="uploadForm" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="imageInput2" class="add"> <img src="/static/images/Upload.png" alt=""></label>
+            <input type="file" name="image"  id="imageInput2" style="visibility: hidden;">
+        </form>
+        <button class="profile" id="profile" onclick="tabs('profile','home','profilepage','homepage','flex')"><img src="/static/images/prof.png" alt=""></button>
+      </footer>
 	<script>
 		$(document).ready(function() {
-    $('#uploadForm').submit(function(event) {
-		console.log("as");
+    $('#uploadForm').change(function(event) {
+		console.log("image");
         event.preventDefault();
         var formData = new FormData($(this)[0]);
 
@@ -99,8 +93,8 @@
             }
         });
     });
-    $('#uploadForm2').submit(function(event) {
-		console.log("as");
+    $('#uploadForm2').change(function(event) {
+		console.log("profile");
         event.preventDefault();
         var formData = new FormData($(this)[0]);
 
@@ -126,6 +120,9 @@
                 $('#progressWrapper').show();
             },
             success: function(data) {
+                location.reload();
+
+
                 alert('Upload successful!');
             },
             error: function(xhr, status, error) {
@@ -138,188 +135,91 @@
         });
     });
 });
-function openCity(evt, cityName) {
-  // Declare all variables
-  var i, tabcontent, tablinks;
 
-  // Get all elements with class="tabcontent" and hide them
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-
-  // Get all elements with class="tablinks" and remove the class "active"
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
-
-  // Show the current tab, and add an "active" class to the button that opened the tab
-  document.getElementById(cityName).style.display = "block";
-  evt.currentTarget.className += " active";
+function heart(a){
+    console.log(a);
+    if(a.style.padding=="1px"){
+        a.style.padding="0px";
+        document.getElementById("circle").style.animation="heart 1s normal"
+        console.log("df");
+        setTimeout(()=>{
+            a.style.backgroundImage="url(/static/images/heart_f.png)";
+        },800)
+        setTimeout(()=>{
+            document.getElementById("circle").style.animation="none"
+        },1000)
+    }
+    else{
+        a.style.padding="1px";
+        document.getElementById("circle").style.animation="heart 1s reverse"
+        console.log("dh");
+        setTimeout(()=>{
+            a.style.backgroundImage="url(/static/images/heart_h.png)";
+        },500)
+        setTimeout(()=>{
+            document.getElementById("circle").style.animation="none"
+        },1000)
+    }
 }
-	</script>
-<script>
-// Variable to store the previous data
-var previousData = [];
+function tabs(a,b,c,d,e){
+    document.getElementById(a).style.backgroundColor="#e1d6ff";
+    document.getElementById(a).style.boxShadow="2px 2px 5px rgb(131, 131, 131) inset";
+    document.getElementById(b).style.backgroundColor="white";
+    document.getElementById(b).style.boxShadow="0px 0px";
+    document.getElementById(c).style.display=e;
+    document.getElementById(d).style.display="none"
+}
+posts()
+function posts() {
+    fetch("https://c646-2409-4073-2094-7ccc-ac10-f85d-c925-c65d.ngrok-free.app/uploads")
+        .then((res) => res.json())
+        .then((json) => {
+            json = json.reverse();
+            arr1 = json;
 
-function fetchDataAndUpdate() {
-    // Make an AJAX request to fetch the data
-    $.ajax({
-        url: '/uploads',
-        method: 'GET',
-        success: function(data) {
-            // Compare current data with previous data
-            if (!isEqual(data, previousData)) {
-                var parentContainer = document.getElementById('Paris');
+            console.log(json[0].name);
+            console.log(json[0].filename);
+            console.log(json[0].name);
+            console.log(json[0].profile);
 
-            // Clear existing images
-            parentContainer.innerHTML = '';
-                // If there are differences, update the images
-                updateImages(data);
-                // Update previousData with the new data
-                previousData = data;
+            // Clear existing posts
+            document.getElementById("posts").innerHTML = '';
+
+            for (let i = 0; i <= json.length - 1; i++) {
+                var tags = "#" + json[i].tags[0] + " ";
+                for (let j = 1; j <= json[i].tags.length - 1; j++) {
+                    tags += " " + json[i].tags[j] + " ";
+                }
+                tags[0] = "#";
+                document.getElementById("posts").innerHTML += "<div class='post'><img src=/static/" + json[i].filename + "/><div class='post_options'><div class='porf' style='background-image:url(/static/" + json[i].profile + ")'></div><h2>" + json[i].name + "</h2><div class='heart' style='background-image: url(/static/images/heart_h.png);padding:1px' onclick='heart(this)'><div class='circle' id='circle'></div></div></div><p>This is demo description of the post</p><b>" + tags + "</b></div>"
             }
-        },
-        error: function(err) {
-            console.error('Error fetching data:', err);
-        }
-    });
-}
-function isValidJSON(str) {
-    try {
-        JSON.parse(str);
-        return true;
-    } catch (e) {
-        return false;
-    }
-}
-// Function to update images
-function updateImages(data) {
-    // Get the existing parent container
-    var data = data.reverse();
 
-    var parentContainer = document.getElementById('Paris');
-
-    // Iterate through the data
-    data.forEach(function(item) {
-        // Create a new image element
-        var img = document.createElement('img');
-        // Set the src attribute to the filename from the data
-        img.src = '/static/' + item.filename;
-        img.alt = 'Image Description';
-
-        // Create the container div
-        var container = document.createElement('div');
-        container.classList.add('image-container');
-
-        // Append the image to the container
-        container.appendChild(img);
-
-        // Create the glassy-footer div
-        var footer = document.createElement('div');
-        footer.classList.add('glassy-footer');
-
-        // Create the like button
-        var likeButton = document.createElement('button');
-        likeButton.classList.add('like-button');
-        likeButton.setAttribute('onclick', 'likeIt()');
-
-        // Create the like wrapper
-        var likeWrapper = document.createElement('div');
-        likeWrapper.classList.add('like-wrapper');
-
-        // Create the ripple effect div
-        var ripple = document.createElement('div');
-        ripple.classList.add('ripple');
-
-        // Create the heart SVG
-        var heartSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        heartSvg.classList.add('heart');
-        heartSvg.setAttribute('width', '24');
-        heartSvg.setAttribute('height', '24');
-        heartSvg.setAttribute('viewBox', '0 0 24 24');
-
-        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('d', 'M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z');
-        heartSvg.appendChild(path);
-
-        // Create the particles div
-        var particles = document.createElement('div');
-        particles.classList.add('particles');
-        particles.style.setProperty('--total-particles', '6');
-
-        // Append particles to like wrapper
-        likeWrapper.appendChild(ripple);
-        likeWrapper.appendChild(heartSvg);
-        likeWrapper.appendChild(particles);
-
-        // Append like wrapper to like button
-        likeButton.appendChild(likeWrapper);
-
-        // Create the comment icon
-        var commentIcon = document.createElement('i');
-        commentIcon.classList.add('fa-solid', 'fa-comment');
-
-        // Append like button and comment icon to footer
-        footer.appendChild(likeButton);
-        footer.appendChild(commentIcon);
-
-        // Append footer to container
-        container.appendChild(footer);
-
-        // Create the description div
-        var description = document.createElement('div');
-        description.classList.add('description');
-        var p = document.createElement('p');
-        var t = 'People in this photo';
-        try {
-            // Attempt to parse the tags property
-            var tags = JSON.parse(item.tags);
-            
-            // If parsing succeeds, iterate through each tag in the tags array
-            tags.forEach(function(tag) {
-                // Do something with each tag
-                console.log(tag);
-            });
-
-            // Output tags to the HTML element
-            var p = document.createElement('p');
-            t="<b>TAGS: </b><br>"
-            p.innerHTML = t+tags.join('<br>'); // Assuming you want to concatenate tags into a string
-            description.appendChild(p);
-        } catch (error) {
-            // If parsing fails, log the error
-            var p = document.createElement('p');
-            p.textContent = "Please wait processing image...";
-            description.appendChild(p);
-        }
-
-        // Append description to container
-        container.appendChild(description);
-
-        // Append container to the existing parent container
-        parentContainer.appendChild(container);
-    });
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
 }
 
+var arr1;
 
-// Function to compare two arrays of objects
-function isEqual(arr1, arr2) {
-    if (arr1.length !== arr2.length) return false;
-    for (var i = 0; i < arr1.length; i++) {
-        if (JSON.stringify(arr1[i]) !== JSON.stringify(arr2[i])) {
-            return false;
-        }
-    }
-    return true;
-}
+setInterval(() => {
+    fetch("https://c646-2409-4073-2094-7ccc-ac10-f85d-c925-c65d.ngrok-free.app/uploads")
+        .then((res) => res.json())
+        .then((json) => {
+            var newArr = json;
 
-// Call fetchDataAndUpdate initially
-fetchDataAndUpdate();
-
-// Call fetchDataAndUpdate every 1 second
-setInterval(fetchDataAndUpdate, 1000);
+            // Compare arrays
+            if (JSON.stringify(arr1) !== JSON.stringify(newArr)) {
+                arr1 = newArr;
+                posts();
+            } else {
+                console.log("No changes detected");
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+}, 1000);
 
 </script>
 

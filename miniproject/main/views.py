@@ -15,6 +15,11 @@ import time
 from . import helper
 import threading
 
+import subprocess
+
+from PIL import Image as PILImage
+
+
 def get_user_cart_filenames(user_name):
     try:
         user_cart = Cart.objects.get(user__name=user_name)
@@ -111,7 +116,7 @@ def unverified(request):
         return HttpResponse("Verification not started or user not logged in")
 
 def send_verification_email(email, hash_value):
-    url="http://192.168.43.41:8000/verify/"+str(hash_value)
+    url="https://c646-2409-4073-2094-7ccc-ac10-f85d-c925-c65d.ngrok-free.app/verify/"+str(hash_value)
     helper.send_verification_email(email,url)
     
 
@@ -126,6 +131,10 @@ def dash(request):
     if request.session.get("user"):
         csrf_token = get_token(request)
         user=request.session["user"]
+        user=User.objects.get(name=user.name)
+        request.session["user"] = user
+        
+        
         context = {'user': user.name,'csrf_token': csrf_token,"profile":user.profile}
         template = loader.get_template('dash.html')
         rendered_template = template.render(context, request)
@@ -216,15 +225,12 @@ def profile_upload(request):
         
         user = request.session.get("user")
         user.profile = new_filename
+        
 
         user.save()
         return JsonResponse({'success': True, 'message': 'Image uploaded successfully'})
     else:
         return JsonResponse({'success': False, 'message': 'No image file provided'})
-
-import subprocess
-
-from PIL import Image as PILImage
 
 
 def upload_image(request):
@@ -238,9 +244,8 @@ def upload_image(request):
         
         os.makedirs(upload_directory, exist_ok=True)
         
-        # Resize the image to reduce memory usage
         img = PILImage.open(image)
-        img.thumbnail((800, 800))  # Resize the image to a maximum width and height of 800 pixels
+        img.thumbnail((800, 800))  
         img.save(os.path.join(upload_directory, new_filename))
         
         user = request.session.get("user")
@@ -248,7 +253,6 @@ def upload_image(request):
         cart.add_item(filename=new_filename)
         cart.save()
         
-        # Launch a detached subprocess to handle image processing
         subprocess.Popen(["python", str(os.getcwd())+"\\main\\process_image.py", str(user.uid), str(user.name),str(user.profile),new_filename])
         
         return JsonResponse({'success': True, 'message': 'Image uploaded successfully'})
@@ -278,4 +282,10 @@ def notify(request):
         return JsonResponse({"value":str(val)})
     except:
         return JsonResponse({"value":str(0)})
-    
+def get_profile(request):
+    user = request.session.get("user")
+    if user is not None:
+        user_profile = user.profile
+        return JsonResponse({"profile":"/static/"+user_profile})
+    else:
+        return HttpResponse("User session not found", status=404)

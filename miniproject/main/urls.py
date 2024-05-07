@@ -32,4 +32,5 @@ urlpatterns = [
     path("profile_upload",views.profile_upload,name="profile_upload"),
     path("uploads",views.uploads_json,name="uploads"),
     path("notification",views.notify,name="notify"),
+    path("get_profile",views.get_profile,name="get_profile")
 ]

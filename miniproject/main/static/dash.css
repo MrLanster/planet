@@ -1,645 +1,294 @@
-body {
-    margin: 20px;
-    background-color:#EEE8FF;
-}
-
-.profile-container {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    border: 4px solid #9878F4; 
-    border-radius: 50%;
-    overflow: hidden; 
-}
-
-
-.profile-image {
-    width: 80px; 
-    height: 100px; 
-    object-fit: cover; 
-    border-radius: 50%;
-}
-
-
-.profile-pic {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-}
-
-.bell-container {
-    position: absolute;
-    top:20px;
-    right: 10px;
-}
-
-.bell-icon {
-    width: 30px;
-    height: 30px;
-}
-
-.center-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-.center-image {
-
-    width: 50px;
-    height: 50px;
-}
-
-.purple-text {
-    color: #9878F4;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-size: 20px;
-    margin-top: 10px;
-}
-.top-center{
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-
-
-
-}
-
-.greeting {
-    position: relative; 
-    margin-right:200px;
-    
-    top:70px;
-    display: flex;
-    flex-direction: column;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
-
-#greet1{
-    font-size:25px;
-    color:#9878F4;
-}
-#greet{
-    font-size:25px;
-
-}
-
-.image-container {
-    position: relative;
-    left:2px;
-    margin:20px;
-    max-width: 700px; /* Adjust the maximum width as needed */
-    overflow: hidden;
-    width:400px;
-    box-shadow: 0 0 20px rgba(150, 120, 244, 0.7); /* Purple shaded shadow */
-    border-radius: 15px; /* Rounded edges */
-    top:100px;
-
-}
-
-img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: 15px 15px 0 0; /* Rounded top edges */
-}
-
-.description {
-    padding: 15px;
-    background-color: #fff; /* Set a background color for the description */
-    border-radius: 0 0 15px 15px; /* Rounded bottom edges */
-}
-
-.description p {
-    margin: 0;
-}
-.container {
-    text-align: center; 
-
-
-    }
-    .posts {
-      display: inline-block; 
-      align-items: center;
-      background-color: whitesmoke;
-      position: relative;
-      size: 50px;
-      height:50px;
-  }
-  
-    
-  
- .wrapper-demo {
-	 text-align: center;
-	 margin-top: 40vh;
-}
- :focus {
-	 outline: none;
-}
- .toggle-icon {
-	 width: 45pt;
-	 height: 45pt;
-	 font-size: 45pt;
-	 position: relative;
-	 color: gray;
-	 cursor: pointer;
-	 border: none;
-	 background-color: transparent;
-}
- .toggle-icon:before, .toggle-icon:after {
-	 position: absolute;
-	 top: 0;
-	 left: 0;
-	 transition: all 0.3s ease-out;
-	 content: "\f08a";
-	 font-family: fontawesome;
-}
- .toggle-icon:hover:before {
-	 transform: scale(1.2);
-}
- .toggle-icon:active:before {
-	 transition: none;
-	 transform: scale(1);
-}
- .toggle-icon:after {
-	 opacity: 0;
-}
- .toggle-icon.-checked {
-	 color: #a12c2c;
-}
- .toggle-icon.-checked:before {
-	 content: "\f004";
-}
- .toggle-icon.-checked:after {
-	 content: "\f004";
-	 animation: likeFly 0.6s ease-in;
-}
- @keyframes heartbeat {
-	 from {
-		 opacity: 1;
-	}
-	 to {
-		 transform: scale(3);
-		 opacity: 0;
-	}
-}
- @keyframes likeFly {
-	 from {
-		 opacity: 1;
-	}
-	 to {
-		 transform: scale(3) rotate(45deg) translateY(-90px);
-		 opacity: 0;
-	}
-}
- 
-
-    
-    
-    .glassy-footer{
-        position:absolute;
-        bottom:12%;
-        padding:26px;
-        height:37px;
-        width:600px;
-        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1));
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    .glassy-footer::before {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 50px; 
-    background: linear-gradient(to top, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
-    pointer-events: none;
-  }
-*, *:before, *:after {
-  position: relative;
-  box-sizing: border-box;
-}
-
-:root {
-  --color-bg: #FDF1F2;
-  --color-heart: #EA442B;
-  --easing: cubic-bezier(.7,0,.3,1);
-  --duration: 0.75s;
-}
-
-
-
-.like-button {
-  font-size: 45px;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  border: none;
-  border-radius: 50%;
-  background: transparent;
-  width: 1em;
-  height: 1em;
-  padding: 2px;
-  margin: 0;
-  outline: none;
-  z-index: 2;
-  -webkit-transition: -webkit-transform var(--duration) var(--easing);
-  transition: -webkit-transform var(--duration) var(--easing);
-  transition: transform var(--duration) var(--easing);
-  transition: transform var(--duration) var(--easing), -webkit-transform var(--duration) var(--easing);
-  cursor: pointer;
-  position: absolute;   
-  bottom: 15%;
-  left:30px;
-}
-.like-button:before {
-  z-index: -1;
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-
-  transition: inherit;
-}
-
-.like-button:after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
-  border-radius: inherit;
-  z-index: -1;
-}
-.like-button:active:before {
-  -webkit-animation: depress-shadow var(--duration) var(--easing) both;
-          animation: depress-shadow var(--duration) var(--easing) both;
-}
-.like-button:focus:after {
-  -webkit-animation: depress var(--duration) var(--easing) both;
-          animation: depress var(--duration) var(--easing) both;
-}
-@-webkit-keyframes depress {
-  from, to {
-    -webkit-transform: none;
-            transform: none;
-  }
-  50% {
-    -webkit-transform: translateY(5%) scale(0.9);
-            transform: translateY(5%) scale(0.9);
-  }
-}
-@keyframes depress {
-  from, to {
-    -webkit-transform: none;
-            transform: none;
-  }
-  50% {
-    -webkit-transform: translateY(5%) scale(0.9);
-            transform: translateY(5%) scale(0.9);
-  }
-}
-@-webkit-keyframes depress-shadow {
-  from, to {
-    -webkit-transform: none;
-            transform: none;
-  }
-  50% {
-    -webkit-transform: scale(0.5);
-            transform: scale(0.5);
-  }
-}
-@keyframes depress-shadow {
-  from, to {
-    -webkit-transform: none;
-            transform: none;
-  }
-  50% {
-    -webkit-transform: scale(0.5);
-            transform: scale(0.5);
-  }
-}
-.like-wrapper {
-  display: grid;
-  -webkit-box-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-          justify-content: center;
-  z-index: 1;
-}
-.like-wrapper > * {
-  margin: auto;
-  grid-area: 1 / 1;
-}
-
-.heart {
-  width: .5em;
-  height: .5em;
-  display: block;
-  -webkit-transform-origin: center 80%;
-          transform-origin: center 80%;
-}
-.heart > path {
-  stroke: var(--color-heart);
-  stroke-width: 2;
-  fill: transparent;
-  -webkit-transition: fill var(--duration) var(--easing);
-  transition: fill var(--duration) var(--easing);
-}
-.like-button:focus .heart > path {
-  fill: var(--color-heart);
-}
-.like-button:focus .heart {
-  -webkit-animation: heart-bounce var(--duration) var(--easing);
-          animation: heart-bounce var(--duration) var(--easing);
-}
-@-webkit-keyframes heart-bounce {
-  40% {
-    -webkit-transform: scale(0.7);
-            transform: scale(0.7);
-  }
-  0%, 80%, 100% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
-  }
-}
-@keyframes heart-bounce {
-  40% {
-    -webkit-transform: scale(0.7);
-            transform: scale(0.7);
-  }
-  0%, 80%, 100% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
-  }
-}
-/* Added wrapper to prevent layout jank with resizing particles */
-.particles {
-  width: 1px;
-  height: 1px;
-}
-
-.particle {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: .1em;
-  width: .1em;
-  border-radius: .05em;
-  background-color: var(--color);
-  --percentage: calc( var(--i) / var(--total-particles) );
-  --Θ: calc( var(--percentage) * 1turn );
-  -webkit-transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(0) scaleY(0);
-          transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(0) scaleY(0);
-  -webkit-transition: all var(--duration) var(--easing);
-  transition: all var(--duration) var(--easing);
-}
-.like-button:focus .particle {
-  -webkit-animation: particles-out calc(var(--duration) * 1.2) var(--easing) forwards;
-          animation: particles-out calc(var(--duration) * 1.2) var(--easing) forwards;
-}
-@-webkit-keyframes particles-out {
-  50% {
-    height: .3em;
-  }
-  50%, 60% {
-    height: .3em;
-    -webkit-transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(0.8em) scale(1);
-            transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(0.8em) scale(1);
-  }
-  60% {
-    height: .2em;
-  }
-  100% {
-    -webkit-transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(1em) scale(0);
-            transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(1em) scale(0);
-  }
-}
-@keyframes particles-out {
-  50% {
-    height: .3em;
-  }
-  50%, 60% {
-    height: .3em;
-    -webkit-transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(0.8em) scale(1);
-            transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(0.8em) scale(1);
-  }
-  60% {
-    height: .2em;
-  }
-  100% {
-    -webkit-transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(1em) scale(0);
-            transform: translate(-50%, -50%) rotate(var(--Θ)) translateY(1em) scale(0);
-  }
-}
-.ripple {
-  height: 1em;
-  width: 1em;
-  border-radius: 50%;
-  overflow: hidden;
-  z-index: 1;
-}
-.ripple:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0.4em solid var(--color-heart);
-  border-radius: inherit;
-  -webkit-transform: scale(0);
-          transform: scale(0);
-}
-.like-button:focus .ripple:before {
-  -webkit-animation: ripple-out var(--duration) var(--easing);
-          animation: ripple-out var(--duration) var(--easing);
-}
-@-webkit-keyframes ripple-out {
-  from {
-    -webkit-transform: scale(0);
-            transform: scale(0);
-  }
-  to {
-    -webkit-transform: scale(5);
-            transform: scale(5);
-  }
-}
-@keyframes ripple-out {
-  from {
-    -webkit-transform: scale(0);
-            transform: scale(0);
-  }
-  to {
-    -webkit-transform: scale(5);
-            transform: scale(5);
-  }
-}
-
-
-/* Reset the animation when clicking again! */
-.like-button:focus {
-  pointer-events: none;
-  cursor: normal;
-}
-
-
-
-.center-container{
-
-  display:flex;
-  
-  }
-
-body >div {margin:auto;}
-
-.tabB{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color:whitesmoke;
-  position: fixed;
-  bottom: 0;
-  top:700px;
-  width:700px;
-  height:100px;
-  z-index: 999;
-  bottom: 0;
-  left: 0;
-
-}
-.tab{
-  position: fixed;
-  left:200px;
+html,body{
+  margin: 0px;
+  font-family: "Montserrat", sans-serif;
+  background-color:#EEE8FF;
 }
 .profile-container{
+  width:100vw;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   position: fixed;
-  z-index: 999;
+ background-color:#EEE8FF;
+ padding: 10px 0px;
+}
+.profile-container > img{
+  width:35px;
+  height: fit-content;
+  margin: auto 20px;
+}
+.profile-pic{
+  width: 60px;
+  height: 60px;
+  border-radius: 100px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 2px solid blueviolet;
+  margin: auto 20px;
+}
+.logo{
+  margin: auto;
+  display: flex;
+}
+.logo > img{
+  width: 50px;
+  height: fit-content;
+}
+.logo > p{
+  font-size: 28px;
+  margin: auto 10px;
+  font-weight: 500;
+  color: blueviolet;
+}
+.homepage{
+  width: 400px;
+  height: 100svh;
+  margin: auto;
 
 }
-.top-center{
-  position: fixed;
-  left:200px;
-  z-index: 999;
-
-}
-.bell-container{
-  position: fixed;
-  z-index: 999;
-}
-.b2 {
-  position: fixed;
-  background-color: purple;
-  color: transparent;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  right:30px;
-}
-.upload-icon1 {
-  color: transparent;
-  height:30px;
-  width: 30px; /* Adjust size as needed */
-  height: auto; /* Automatically adjusts height based on width */
-  border-radius: 50%; /* Rounds the corners */
-  margin-right: 5px; /* Add space between icon and text */
-}
-.upload-icon2 {
-  color: transparent;
-  height:70px;
-  width: 56px; /* Adjust size as needed */
-  height: auto; /* Automatically adjusts height based on width */
-  border-radius: 50%; /* Rounds the corners */
-  margin-right: 5px; /* Add space between icon and text */
-}
-#b1{
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-.tablinks {
-  position: relative;
-  left:-50px;
-  bottom:10px;
-  margin-right: 40px;
-}
-#London{
-  position: relative;
-  top:140px;
-}
-
-.container {
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  width: 100%;
-  text-align: center;
-}
-
-.container p {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-form {
+.homepage > h3{
   display: flex;
   flex-direction: column;
-  align-items: center;
+  font-size: 25px;
+  font-weight: 500;
+  padding:0px;
+  padding-top: 120px;
+  margin: 0;
+  padding-bottom: 30px;
+
 }
-
-input[type="file"] {
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 2px solid #ccc;
-  border-radius: 5px;
+.homepage > h3 > b{
+  padding:10px 0px;
+  color: blueviolet;
 }
-
-button[type="submit"] {
-  background-color: #9878F4; /* Updated color */
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-button[type="submit"]:hover {
-  background-color: #7d5cc9; /* Darker shade for hover */
-}
-
-#progressWrapper {
-  background-color: #7d5cc9;
-
-  display: none;
-  margin-top: 20px;
-}
-
-#progressBar {
-  background-color: #7d5cc9;
-
+.post{
   width: 100%;
-  height: 20px;
-  border-radius: 10px;
+  height: fit-content;
+  border-radius: 20px;
+  box-shadow: 2px 2px 5px rgb(161, 161, 161);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 30px;
+  background-color: white;
+}
+.post > img{
+  width: 100%;
+  height: auto;
+  border-radius: 20px 20px 0px 0px;
+}
+.post > b{
+  color: blueviolet;
+  padding: 10px;
+}
+.post > p{
+  margin: 10px ;
+  margin-top: 30px;
+}
+.post_options{
+  width: calc(100% - 30px);
+  height: 50px;
+  border-radius: 100px;
+  margin: auto;
+  margin-top: -80px;
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  flex-direction: row;
+}
+.gap{
+  width: 100%;
+  height: 70px;
+}
+.heart{
+  width: 25px;
+  height: 25px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: auto 10px;
+  margin-left: auto;
+  position: relative;
+
+}
+.circle{
+  border-radius: 400px;
+  background-color: #b81b47;
+  /* animation: heart 1s normal; */
+  position: absolute;
+}
+@keyframes heart {
+  0%{
+    width: 0px;
+    height: 0px;
+    opacity: 1;
+    top: 50%;
+  left: 50%;
+  }
+  80%{
+    width: 25px;
+    height: 25px;
+    opacity: 1;
+    top: 0%;
+  left: 0%;
+  }
+  100%{
+    width: 25px;
+    height: 25px;
+    opacity: 0;
+    top: -50%;
+  left: 0%;
+  }
+}
+ .porf{
+  width: 50px;
+  height: 50px;
+  border-radius: 100px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.post_options > h2{
+  color: white;
+  font-size: 18px;
+  margin: auto 10px;
+  font-weight: 500;
 }
 
-#progressPercent {
-  color:white;
+footer{
+  width: 100%;
+  height: 50px;
+  position: fixed;
+  bottom: 0;
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+footer > button{
+  width: 60px;
+  height: 30px;
+  margin: auto;
+  padding: 0;
+  outline: 0;
+  border: 0;
+  border-radius: 100px;
+}
+.home{
+  background-color:#e1d6ff ;
+  box-shadow: 2px 2px 5px rgb(131, 131, 131) inset;
+}
+.add{
+  display: block;
+  scale: 2.5;
+  transform: translateY(-10px);
+  background-color: transparent;
+  box-shadow: 0px 0px;
+  width: 60px;
+  height: 30px;
+  margin: auto;
+  border-radius: 100px;
+  text-align: center;
+}
+.add > img{
+  width: 30px;
+  height: fit-content;
+}
+.profile{
+  background-color: white;
+  box-shadow: 0px 0px
 
-  font-size: 14px;
-  margin-top: 5px;
+}
+footer > button > img{
+  width: 30px;
+  height: fit-content;
+}
+.profilepage{
+  width: 400px;
+  height: 100svh;
+  margin: auto;
+  display: flex;
+}
+.box{
+  width: calc(100% - 30px);
+  height: fit-content;
+  box-sizing: border-box;
+  padding: 15px;
+  border-radius: 20px;
+  background-color: white;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+.box > img{
+  width: 150px;
+  height: fit-content;
+  clip-path: circle(40%);
+  margin: auto;
+  margin-top: -100px;
+}
+.box > h3{
+  margin: auto;
+}
+.box > button{
+  width: 100%;
+  height: 50px;
+  border: 0;
+  outline: 0;
+  border-radius: 10px;
+  color: white;
+  background-color: blueviolet;
+  font-size: 18px;
+}
+.upload{
+  display: block;
+  width: 100%;
+  height: 50px;
+  border-radius: 10px;
+  color: white;
+  background-color: blueviolet;
+  font-size: 18px;
+  text-align: center;
+  line-height: 50px;
+  margin-top: 30px;
+}
+
+
+
+
+
+
+
+
+
+@media screen  and (max-width:430px){
+  .homepage{
+    width:calc(100vw - 30px)
+  }
+  .profilepage{
+    width:calc(100vw - 30px)
+  }
+  .profile-container > img{
+    width: 30px;
+  }
+  .logo > img{
+    width: 40px;
+    height: fit-content;
+  }
+  .logo > p{
+    font-size: 18px;
+    margin: auto 10px;
+    font-weight: 500;
+    color: blueviolet;
+  }
+  .profile-pic{
+    width: 40px;
+    height: 40px;
+}
+.homepage > h3{
+  font-size: 22px;
+}
 }
